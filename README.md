@@ -2,7 +2,11 @@
 
 ## Overview
 
-This repository contains the PyTorch implementation of for VD-transformer motor control.
+This repository contains the PyTorch implementation of VD-transformer for motor control (MC) tasks.
+
+## Benchmark suite
+
+PixMC https://github.com/ir413/mvp/tree/master/pixmc
 
 ## Vision components
 
@@ -12,11 +16,15 @@ There are two alternative ways to learn visual representations: masked autoencod
 
 
 
-### Pre-trained vision transformer
+### Pre-trained vision transformer adapter (ViT-Adapter)
 
 Cordonnier et al. (2020) theoretically proved that self-attention can learn to behave similarly to convolution. Empirically, patches were taken from images as inputs, but the small patch size makes the model only applicable to image data with low resolutions. Without specific constraints on patch size, vision Transformers (ViTs) extract patches from images and feed them into a Transformer encoder to obtain a global representation, which will finally be transformed for classification (Dosovitskiy et al., 2021). Notably, Transformers show better scalability than CNNs: when training larger models on larger datasets, vision Transformers outperform ResNets by a significant margin.
 
+However, the plain ViT suffers inferior performance on dense predictions due to weak prior assumption. The backbone in our framework is a plain ViT that can learn powerful representations from large-scale multi-modal data. When transferring to downstream tasks, a pretraining-free adapter is used to introduce the image-related inductive biases into the model, making it suitable for these task.
+
 ## Decision
+
+### MVP
 
 Given the visual encoder, we train controllers on top with reinforcement learning or other control algorithms. We keep the visual representations frozen and do not perform any taskspecific fine-tuning of the encoder; all motor control tasks use the same visual representations.
 
