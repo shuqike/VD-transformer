@@ -12,7 +12,7 @@ PixMC https://github.com/ir413/mvp/tree/master/pixmc
 
 PixMC features a combination of two robotic arms and grippers:
 
-1. Franka: A 7-DoF arm equipped with a 2-DoF gripper, commonly used for research, manufactured by Franka Emika.
+1. Franka: A 7-degree-of-freedom(DoF) arm equipped with a 2-DoF gripper, commonly used for research, manufactured by Franka Emika.
 2. Kuka with Allegro: A Kuka LBR iiwa arm that has 7 DoFs and a 4-finger Allegro hand with 16 DoFs (4 DoFs per finger), resulting in a total of 23 DoFs.
 
 ## Vision components
