@@ -10,6 +10,11 @@ Note: this README file is generated with the help of GPT-3.5.
 
 PixMC https://github.com/ir413/mvp/tree/master/pixmc
 
+PixMC features a combination of two robotic arms and grippers:
+
+1. Franka: A 7-DoF arm equipped with a 2-DoF gripper, commonly used for research, manufactured by Franka Emika.
+2. Kuka with Allegro: A Kuka LBR iiwa arm that has 7 DoFs and a 4-finger Allegro hand with 16 DoFs (4 DoFs per finger), resulting in a total of 23 DoFs.
+
 ## Vision components
 
 There are two alternative ways to learn general visual representations: masked autoencoders (MAE) or vision transformer adapters (ViT-Adapter).
@@ -22,7 +27,7 @@ MAEs leverage Vision Transformers (ViT) to reconstruct missing pixels in input i
 
 The ViT-Adapter could provide an improvement over the MAE component. While the plain ViT can learn powerful representations from large-scale multi-modal data, it can suffer from weak prior assumptions, leading to inferior performance on dense predictions. To address this, we introduce a pretraining-free adapter into the plain ViT framework, allowing it to acquire image-related inductive biases necessary for downstream tasks.
 
-## Decision
+## Decision components
 
 Using a visual encoder as a starting point, we employ reinforcement learning or other control algorithms to train controllers. In doing so, we maintain the visual representations as they are, without any task-specific fine-tuning of the encoder. This approach provides two primary advantages. Firstly, it avoids the encoder from overfitting to the current setting, thereby preserving general visual representations that can facilitate learning new tasks. Secondly, it considerably reduces memory usage and run time since there is no need to perform back-propagation through the encoder.
 
