@@ -4,6 +4,8 @@
 
 This repository contains the PyTorch implementation of VD-transformer for motor control (MC) tasks.
 
+Note: this README file is generated with the help of chatgpt.
+
 ## Benchmark suite
 
 PixMC https://github.com/ir413/mvp/tree/master/pixmc
@@ -14,7 +16,7 @@ There are two alternative ways to learn general visual representations: masked a
 
 ### Pre-trained vision encoders (MAE)
 
-MAEs mask-out random patches of the input image and reconstruct the missing pixels with a Vision Transformer (ViT).
+MAEs mask-out random patches of the input image and reconstruct the missing pixels with a Vision Transformer (ViT). The most appealing property of MAE is its simplicity and minimal reliance on dataset-specific augmentation engineering.
 
 ### Pre-trained vision transformer adapter (ViT-Adapter)
 
@@ -22,9 +24,11 @@ This is an improvement of the MAE component. The plain ViT suffers inferior perf
 
 ## Decision
 
+Given the visual encoder, we train controllers on top with reinforcement learning or other control algorithms. We keep the visual representations frozen and do not perform any taskspecific fine-tuning of the encoder; all motor control tasks use the same visual representations. This design has two main benefits. First, it prevents the encoder from overfitting to the setting at hand and thus preserves general visual representations for learning new tasks. Second, it leads to considerable memory and run time savings since there is no need to back-propagate through the encoder.
+
 ### MVP
 
-Given the visual encoder, we train controllers on top with reinforcement learning or other control algorithms. We keep the visual representations frozen and do not perform any taskspecific fine-tuning of the encoder; all motor control tasks use the same visual representations.
+We train task-specific motor control policies on top of this embedding with model-free reinforcement learning (PPO). PPO is a state-of-theart policy gradient method that has shown excellent performance on complex motor control tasks and successful transfer to real hardware.
 
 ## Adapter
 
