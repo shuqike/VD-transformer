@@ -4,7 +4,7 @@
 
 This repository contains the PyTorch implementation of VD-transformer for motor control (MC) tasks.
 
-Note: this README file is generated with the help of chatgpt.
+Note: this README file is generated with the help of GPT-3.5.
 
 ## Benchmark suite
 
@@ -16,19 +16,21 @@ There are two alternative ways to learn general visual representations: masked a
 
 ### Pre-trained vision encoders (MAE)
 
-MAEs mask-out random patches of the input image and reconstruct the missing pixels with a Vision Transformer (ViT). The most appealing property of MAE is its simplicity and minimal reliance on dataset-specific augmentation engineering.
+MAEs leverage Vision Transformers (ViT) to reconstruct missing pixels in input images after masking out random patches. Their simplicity and minimal dependence on dataset-specific augmentation techniques make them an attractive choice.
 
 ### Pre-trained vision transformer adapter (ViT-Adapter)
 
-This is an improvement of the MAE component. The plain ViT suffers inferior performance on dense predictions due to weak prior assumption. To address this issue, we use the ViT-Adapter. The backbone in its framework is a plain ViT that can learn powerful representations from large-scale multi-modal data. When transferring to downstream tasks, a pretraining-free adapter is used to introduce the image-related inductive biases into the model, making it suitable for these task.
+The ViT-Adapter could provide an improvement over the MAE component. While the plain ViT can learn powerful representations from large-scale multi-modal data, it can suffer from weak prior assumptions, leading to inferior performance on dense predictions. To address this, we introduce a pretraining-free adapter into the plain ViT framework, allowing it to acquire image-related inductive biases necessary for downstream tasks.
 
 ## Decision
 
-Given the visual encoder, we train controllers on top with reinforcement learning or other control algorithms. We keep the visual representations frozen and do not perform any taskspecific fine-tuning of the encoder; all motor control tasks use the same visual representations. This design has two main benefits. First, it prevents the encoder from overfitting to the setting at hand and thus preserves general visual representations for learning new tasks. Second, it leads to considerable memory and run time savings since there is no need to back-propagate through the encoder.
+Using a visual encoder as a starting point, we employ reinforcement learning or other control algorithms to train controllers. In doing so, we maintain the visual representations as they are, without any task-specific fine-tuning of the encoder. This approach provides two primary advantages. Firstly, it avoids the encoder from overfitting to the current setting, thereby preserving general visual representations that can facilitate learning new tasks. Secondly, it considerably reduces memory usage and run time since there is no need to perform back-propagation through the encoder.
 
 ### MVP
 
-We train task-specific motor control policies on top of this embedding with model-free reinforcement learning (PPO). PPO is a state-of-theart policy gradient method that has shown excellent performance on complex motor control tasks and successful transfer to real hardware.
+Using a model-free reinforcement learning approach called Proximal Policy Optimization (PPO), we train task-specific motor control policies on top of this embedding. PPO is a state-of-the-art policy gradient method that has demonstrated impressive results in tackling complex motor control tasks, and has been successfully applied to transfer learning in real-world hardware scenarios.
+
+Our policy is implemented as a compact multi-layer perceptron (MLP) network. In addition, we train a critic that uses the same representations and has an identical architecture as the policy, but without sharing weights between them.
 
 ## Adapter
 
