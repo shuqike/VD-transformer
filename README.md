@@ -41,6 +41,31 @@ Our policy is implemented as a compact multi-layer perceptron (MLP) network. In 
 
 ## Adapter
 
+## Techniques
+
+### Training a transformer
+
+One commonly used technique for training a Transformer is learning rate warm-up. This means that we gradually increase the learning rate from 0 on to our originally specified learning rate in the first few iterations. Thus, we slowly start learning instead of taking very large steps from the beginning. In fact, training a deep Transformer without learning rate warm-up can make the model diverge and achieve a much worse performance on training and testing. The currently most popular scheduler is the cosine warm-up scheduler, which combines warm-up with a cosine-shaped learning rate decay. Here is an implementation from [UAmsterdam tutorial](https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial6/Transformers_and_MHAttention.html):
+
+```python
+class CosineWarmupScheduler(optim.lr_scheduler._LRScheduler):
+
+    def __init__(self, optimizer, warmup, max_iters):
+        self.warmup = warmup
+        self.max_num_iters = max_iters
+        super().__init__(optimizer)
+
+    def get_lr(self):
+        lr_factor = self.get_lr_factor(epoch=self.last_epoch)
+        return [base_lr * lr_factor for base_lr in self.base_lrs]
+
+    def get_lr_factor(self, epoch):
+        lr_factor = 0.5 * (1 + np.cos(np.pi * epoch / self.max_num_iters))
+        if epoch <= self.warmup:
+            lr_factor *= epoch * 1.0 / self.warmup
+        return lr_factor
+```
+
 ## Reference
 
 1. https://d2l.ai/chapter_attention-mechanisms-and-transformers/vision-transformer.html
@@ -50,3 +75,4 @@ Our policy is implemented as a compact multi-layer perceptron (MLP) network. In 
 5. Xiao, T., Radosavovic, I., Darrell, T., Malik, J. (2022). Masked Visual Pre-training for Motor Control. https://arxiv.org/abs/2203.06173.
 6. Radosavovic, T., Xiao, T., James, S., Abbeel, P., Malik, J., Darrell. T. (2022). Real-World Robot Learning with Masked Visual Pre-training. https://arxiv.org/abs/2210.03109.
 7. Chen, Z., Duan, Y., Wang, W., He, J., Lu, T., Dai, J., Qiao, Y. (). Vision Transformer Adapter for Dense Predictions. https://arxiv.org/abs/2205.08534.
+8. https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/tutorial6/Transformers_and_MHAttention.html
