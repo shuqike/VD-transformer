@@ -37,6 +37,8 @@ Using a model-free reinforcement learning approach called Proximal Policy Optimi
 
 Our policy is implemented as a compact multi-layer perceptron (MLP) network. In addition, we train a critic that uses the same representations and has an identical architecture as the policy, but without sharing weights between them.
 
+### Decision transformer
+
 ## Adapter
 
 ## Reference
